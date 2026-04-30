@@ -1,0 +1,5 @@
+keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-key-alias
+
+apksigner sign --ks my-release-key.jks --ks-key-alias my-key-alias --out backdoor2.apk '/home/kali/Desktop/backdoor2.apk' 
+
+apksigner verify --verbose --print-certs '/home/kali/Desktop/backdoor2.apk' 
