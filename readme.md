@@ -172,18 +172,54 @@
 
     #### 腳本注入網頁 XSS
 
+### XSS漏洞檢測工具
+- XSSER: https://xsser.03c8.net/
 
+- XSStrike: https://github.com/s0md3v/xsstrike
 
+### XSS 防禦方法
+- WAF(WEB APPLICATION FIREWALL): ModSecurity 
+
+- ModSecurity開源: https://github.com/owasp-modsecurity/ModSecurity
 
 ## CSRF漏洞原理
 
-1. 甚麼是CSRF
+### 甚麼是CSRF
     - CSRF(Cross Site Request Forgery)跨站請求違造，攻擊者盜用你的身份，以你的名義發送惡意請求
+
+### 造成危害
+    - 修改帳戶訊息
+    - 利用管理員帳號、上傳木馬
+    - 傳播蠕蟲病毒(點擊 -> 擴散 -> 點擊)
+    - 配合其他攻擊手段，實現攻擊(Ex: XSS、SQLi)
+
+### CSRF漏洞挖掘工具
+- Burp Suite
+- CSRF Tester
+- 開源Python 腳本: https://github.com/s0md3v/Bolt
+
+### 防禦思路
+1. 區分請求是來自於網站本身的前端 or 第三方網站 發起的
+- HTTP Request Header -> Referer 字段:
+    - 引用頁、引薦、來源頁面
+    - 作用: 跟蹤來源、訪問統計、廣告效果
+    - referer不足: 1. HTTP的請求都是可以修改的 2. 可以為空
+
+2. 讓網站本身的前端/偽造的請求變得不一樣
+- CSRF Token: 再請求中加入一些隨機字段(第三方不知道也猜不出來)，讓第三方網站無法偽造請求
+    1. 用戶使用帳號密碼登入，伺服器下發一個隨機的token給客戶端，並將其保存在Session中
+    2. 客戶端把這個token保存起來，放在影藏字段
+    3. 用戶在登入的狀態下，在之後訪問的時候，都要攜帶token字段
+    4. 服務端從session中拿出token值進行比對，如果一致代表請求合法
+    5. 用戶退出，session銷毀，token失效
+
+3. 更安全的方法
+    - 加入二次驗證 (輸入舊密碼、加入驗證碼)
 
 ## WEBCAM入侵原理
 - 結合網路以及攝影機技術所產生的新一代攝影機，其實只要連線上網路的設備滲透原理基本上都是相通的
 
-1. 如何發掘
+### 如何發掘
     - 搜尋活耀IP
     - 端口掃描
     - 指紋篩選
@@ -199,18 +235,188 @@
     - 熟悉風險代碼操作
     - 熟悉設計模式
 
+## 文件上傳漏洞
+
+### 文件上傳漏洞原理
+- 用戶上傳了一個可執行腳本漏洞文件，並且透過執行腳本文件獲得執行伺服器端命令的能力
+
+### 常見操作
+- 一句話木馬(Php文件)
+    - 特點: 代碼短，只有一行代碼，運用場景多，可以單獨生成文件，也可以插入到圖片中。安全性高，隱匿性強，可變形免殺。
+
+- 小馬
+    - 特點: 體積小、功能少、只有上傳文件功能
+
+- 大馬
+    - 特點: 體積大、功能全，能夠管理數據庫、文件管理、對站點進行快速的訊息收集，甚至能夠提權
+
+### 工具
+- webshell 開源github: https://github.com/tennc/webshell
+- 網站控制工具: 
+    - 中國蟻劍: https://github.com/AntSwordProject/antSword
+    - weevely: https://github.com/epinna/weevely3
+    - 哥斯拉 godzilla: https://github.com/BeichenDream/Godzilla
+    - 冰蠍 behinder: https://github.com/rebeyond/Behinder
+- 代理抓包工具 BurpSuite: 
+- 漏洞發現工具: https://github.com/almandin/fuxploider
+
+### 文件上傳靶場練習
+- https://www.youtube.com/watch?v=UvJmlePQDG0&list=PLLoeRTvFkQhs_BFrlc-mlOVp7omTitbWq&index=22
+
+### 危害
+- 伺服器植入黑鏈
+- 挖礦
+- 敏感訊息洩漏
+
+### 漏洞利用流程
+1. 找到上傳位置
+2. 嘗試繞過校驗並上傳文件
+3. 獲取文件位置
+4. 工具連接，管理文件
+
+### 防禦方法
+- 擴展名(後贅)黑白名單
+- MIME類型校驗 (image/gif)
+- 對文件內容進行二次渲染
+- 對上傳的文件重命名，不易被猜到
+- 不要暴露上傳文件的位置
+- 禁用上傳文件的執行權限
+
 ## 文件包含漏洞
 
-1. 甚麼是文件包含漏洞
-    - 本地/遠程文件包含檔案(include)
+### 文件包含漏洞原理
+- 一個代碼文件需要去包含其他的代碼文件導致的漏洞
+    1. 產生原因:
+        - 內容包含: Ex: 網頁導航、footer重複利用
+        - 函數包含
+        
+    2. 分類:
+        - 本地: (Local File Inclusion, LFI) -> 目錄遍歷漏洞/任意文件訪問漏洞
+            - 固定文件名
+            - 通過接口動態包含
+            - 包含惡意代碼、圖片碼 -> 獲得Shell
+            - 包含敏感文件
+        - 遠程: (Remote Flie Inclusion，RFI)
+
+    3. 相關函數和偽協議:
+        - Php: https://www.youtube.com/watch?v=M3yyTlxtGps&list=PLLoeRTvFkQhs_BFrlc-mlOVp7omTitbWq&index=29
+
+### 文件包含漏洞挖掘與利用
+- 漏洞挖掘
+    - url關鍵字: page、file、filename、include
+    - url參數: xxx.php、 xxx.html 例如: ?file=xxx、 ?page= 、 ?home=
+
+- 文件包含漏洞利用工具: https://github.com/D35m0nd142/LFISuite
+
+### 修復
+1. PHP配置文件 -> 關掉遠端包含文件
+2. 禁用動態包含
+3. 過濾協議、 目錄字符
+4. 設置文件白名單
 
 ## SSRF漏洞
 
-1. 甚麼是SSRF
-    - SSRF(Server-Side Request Forgery)服務端請求偽造    
+### SSRF原理
+- SSRF(Server-Side Request Forgery)服務端請求偽造，是一種由攻擊者構造攻擊鏈傳給伺服器，服務端執行併發請求造成的安全漏洞，一般用來內網探測或攻擊內網服務
 
-### 參考資料
+## XXE漏洞
+
+### XXE原理
+- XXE: XML External Entity Injection 即XML外部實體注入漏洞，XXE漏洞發生應用程序解析XML輸入時，沒有禁止外部實體的加載，導致可加載惡意外部文件，造成文件讀取、命令執行、內網端口掃描、攻擊內網網路、甚至發起DOS攻擊等危害
+
+## 反序列化漏洞
+- 尚未學習(待補上): https://www.youtube.com/watch?v=nYIJMJaj7vg&list=PLLoeRTvFkQhs_BFrlc-mlOVp7omTitbWq&index=34
+
+## 信息洩漏
+- 分類:
+    - 敏感信息
+    - URL: Ex: ?file=、 ?id= ...
+    - 帳號密碼
+    - 網站原碼
+    - 資料庫備份
+
+## 常用工具介紹
+
+### 抓包工具-BurpSuite
+
+
+
+## 參考資料
 - https://www.youtube.com/playlist?list=PLgZqc0esdeS-NJms7NYexeMHKLpfAi5HY
+
+- WEB 結合 AI: https://ithelp.ithome.com.tw/users/20168631/ironman/8630
+
+# 實戰流程
+
+## 1. 信息收集
+
+### 基礎信息
+- IP、網段、端口、域名
+- DNS信息
+    - nslookup
+    - clig
+- 域名信息收集
+    - whois
+    - 備案
+    註冊人/MAIL反查
+- 子域名信息收集
+    - google hacking
+    - 第三方網站
+    - 網路空間搜尋引擎: shodan
+    - https tls 證書信息
+    - 子域名爆破工具: OneForAll
+- 端口信息收集
+    - nmap
+- 系統信息
+- 應用信息
+- 版本信息
+- 人員信息
+- 防護信息
+
+### 網站信息
+- 指紋辨識
+- 敏感文件、目錄
+- Waf識別
+
+## 2. 漏洞探測
+- 系統漏洞
+- web漏洞
+- 中間件漏洞
+- 端口服務漏洞
+- 業務邏輯漏洞
+- 通信安全
+
+## 3. 滲透攻擊
+- 根據探測到的信息整理漏洞合集表
+- 分析並驗證端口、服務、應用漏洞
+- 尋找攻擊路徑進入內網，擴大影響
+- 活動訪問權限
+
+## 4. 後滲透
+- 內網信息收集
+- 內網反彈shell
+- 內網穿透
+- 提權
+- 橫向移動
+- 權限維持
+- 痕跡清除
+
+## 5. 信息整理
+- 整理滲透工具
+- 整理蒐集訊息
+- 整理漏洞信息
+
+## 6. 滲透報告
+- 按需整理
+- 補充介紹
+- 加固建議
+
+## 環境與工具準備
+
+### 環境配置
+- 建議: (攻擊)VMWare -> Kali Linux(常用工具都已經安裝好了)
+
+
 
 # Metasploit
 - kali Linux 自帶的後門木馬管理工具
