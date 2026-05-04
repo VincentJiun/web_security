@@ -564,7 +564,37 @@
 
         - 目錄探測工具:
             - dirsearch:
-            - dirmap:     
+            - dirmap: 
+
+    - 針對漏洞的信息洩漏:
+        - 透過工具(論壇)針對中間件、或系統服務商的漏洞進行網站敏感信息洩漏
+
+#### 網站WAF識別
+- Web Application Firewall 網站應用程式防火牆，用於保護網站防止黑客、防網路攻擊的安全防護系統；是最有效，最直接的web安全保護產品。
+
+- 功能:
+    - 防止常見的網路攻擊: SQLi、 XSS、 CSRF、 網頁後門等
+    - 防止自動化攻擊: 暴力破解、 撞庫、 批量註冊、 自動發帖等
+    - 防止其他常見威脅: 爬蟲、 0Day、 代碼分析、 嗅探、 數據串改、 越權訪問、 敏感信息洩漏、 應用層DDos、 遠程惡意包含等
+
+- WAF識別:
+    - wafw00f: https://github.com/EnableSecurity/wafw00f
+    - nmap掃描
+
+### 漏洞掃描工具-AWVS
+- 收費版本: Todo -> 自行製作或尋找破解
+- 操作教學: https://www.youtube.com/watch?v=5MCvKrNIy-g&list=PLLoeRTvFkQhvFktzHsH1QhDMJNuCkZyQm&index=11
+
+### 滲透工具-BurpSuite
+- BuprSuite-Professional破解: https://github.com/xiv3r/Burpsuite-Professional
+    - 安裝破解教學: https://www.youtube.com/watch?v=058PdUiJ0U8
+        - 降JAVA版本避免KEYGEN沒辦法正常使用
+
+- 代理抓包:
+    - BP是以攔截代理的方式，攔截所有通過代理伺服器的網路流量，如客戶端請求數據、伺服器端返回信息等。BP主要攔截http/https協議的流量，通過攔截，BP以中間人的方式，可以對客戶端請求數據、服務端返回做各種處理，以達到安全評估測試的目的。
+
+    - Proxy(http代理)設置: 做為web代理伺服器運行，並做為瀏覽器以及web伺服器的中間人。它允許攔截，檢查和修改兩個方向傳遞的原始業務。
+    
 
 
 
