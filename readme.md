@@ -604,23 +604,23 @@
 
 - 操作參考: https://www.youtube.com/watch?v=qVkU3hBWbu4&list=PLLoeRTvFkQhvFktzHsH1QhDMJNuCkZyQm&index=13
 
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
 # Metasploit
-- kali Linux 自帶的後門木馬管理工具
+- kali Linux 自帶的開源滲透測試工具
+
+## 更新
+```cmd
+    msfconsole -v //查看版本
+    apt-get update    
+    apt-get install metasploit-framework
+```
+## modules目錄文件
+- auxiliary: 輔助模塊、輔助滲透(端口掃描、登入密碼爆破、漏洞驗證)
+- exploits: 漏洞利用模塊,包含主流的漏洞利用腳本，通常是對某些可能存在漏洞的目標進行漏洞利用。命名規則: 操作系統/各類應用協議分類
+- payloads: 攻擊載荷，主要是攻擊成功後在目標機器執行的代碼，比如反彈shell的代碼
+- post: 後滲透階段模塊，漏洞利用成功獲取meterpreter後，項目標發送一些功能性指令，如:提權
+- encoders: 編碼器模塊，主要包含各種編碼工具，對payload進行編碼加密，以便繞過入侵檢測或過濾系統
+- evasions: 躲避模塊，用來生成免殺payload
+- nops: 由於IDS/IPS會檢查數據包中不規則數據，在某些情況下，比如針對溢出攻擊，某些特殊滑行字符串(NOPS x90x90....)則會因為被攔截導致攻擊失敗
 
 ## 操作流程
 
@@ -708,6 +708,14 @@ run persistence -X -i 5 -p 4444 -r (ip)
 
 - 安裝 apktool 最新版本: https://www.youtube.com/watch?v=adwFmvzM2iQ 
 
+## 其他操作指令
+```cmd
+    msfdb init //初始化數據庫
+    db_status //查看是否成功連接數據庫
+    workspace //當前工作區
+    workspace -h //幫助命令
+```
+
 ## MSF漏洞掃描
 1. search (naem): 搜尋漏洞名稱
 2. use (name): 使用該漏洞
@@ -723,6 +731,27 @@ run persistence -X -i 5 -p 4444 -r (ip)
 ```cmd
 run (post module)
 ```
+
+## 內網主機發現
+- MSF主要還是調用nmap工具，基本上還是利用nmap即可
+```cmd
+    db_nmap //nmap掃描
+    -PA //TCP ACK PING 掃描
+    -PS //TCP SYN PING 掃描
+    -PR //ARP 掃描是nmap對目標進行一個arp ping 掃描的過程，尤其是在內網的情況下，因為防火牆不會禁止ARP請求
+    - hosts //當前工作區所有主機
+```
+
+## 信息收集
+- auxiliary/scanner:
+    ```
+        use auxiliary/scanner/portscan/syn
+        set rhost (IP)
+        run/exploit
+    ```
+
+## 後門注入應用
+- https://www.youtube.com/watch?v=6tV_3ei-DgQ&list=PLLoeRTvFkQhvFktzHsH1QhDMJNuCkZyQm&index=31
 
 # 常見漏洞與利用
 
@@ -778,4 +807,11 @@ nmap -v -Pn -p 6379 -sV --script="redis-info"
 ## 弱口令
 ### 暴力破解
 - 指用枚舉的方式爆破用戶信息，具體流程是用事先收集好的數據集成一個字典，然後再利用字典不斷進行枚舉，直到枚舉成功。
-    - 常用字典: 
+    - 常用字典: github搜尋
+
+### 爆破工具
+1. BurpSuit
+2. SNETCracker (Windows): https://github.com/search?q=SNETCracker&type=repositories
+3. Hydra (Kali自帶工具): 
+    - Hydra是一款開源暴力破解工具，支持FTP、MSSQL、MySQL、Pop3、SSH等爆破
+
