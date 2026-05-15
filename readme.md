@@ -55,7 +55,6 @@
     - Hyper Text Markup Language 超文本標記語言
     - 標籤皆以成對的方式編寫
 
-
 - HTML潛在漏洞
 
     - 純HTML基本沒有漏洞
@@ -859,7 +858,7 @@ nmap -v -Pn -p 6379 -sV --script="redis-info"
     1. 內網網段掃描
     2. 共享文件、FTP連線紀錄、瀏覽器訪問紀錄、mstsc連線紀錄
     3. 滲透路由器、交換機
-
-
-## 參考資料:
+### 參考資料:
 - https://www.youtube.com/watch?v=FR4QkEV98G0&list=PLLoeRTvFkQhvFktzHsH1QhDMJNuCkZyQm&index=36
+
+## 域內信息收集
