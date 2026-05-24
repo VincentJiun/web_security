@@ -48,14 +48,19 @@
 6. 搜尋引擎
     - site: *baidu.com -www -baike
 7. 其他搜尋引擎
+    - https://crt.sh/
+    - https://censys.io/
 8. 公開數據
-9. ......
+9. 工具
+    - Maltego (Kali 自帶工具 需註冊並登入) -> 信息收集集大成工具
+    - Sublist3r: https://github.com/aboul3la/Sublist3r
+    - OneForAll: https://github.com/shmilylty/OneForAll
+
+### 網站指紋識別
 
 #### 工具
-- https://crt.sh/
-- https://censys.io/
-
-
+- whatweb: Kali自帶CLI命令工具
+- WhatRuns: Chrome插件
 
 # 常用工具介紹
 ## NMAP
