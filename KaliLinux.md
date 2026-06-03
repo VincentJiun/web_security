@@ -57,10 +57,109 @@
     - OneForAll: https://github.com/shmilylty/OneForAll
 
 ### 網站指紋識別
+- 目錄掃描前，可以先了解該網站是用甚麼語法/框架編寫(以及版本)，可以先行了解該語法/框架是否存在既有漏洞做利用
 
 #### 工具
 - whatweb: Kali自帶CLI命令工具
 - WhatRuns: Chrome插件
+
+### 網站目錄
+- 登入入口
+- 後台入口
+- 數據庫下載地址
+- 敏感文件下載地址
+- 網站目錄架構
+- GIT/SVN洩漏
+- 代碼洩漏
+- ......
+
+#### 如何獲取
+- 爬蟲爬取
+- 暴力掃描
+- 搜尋引擎 (google、Shodan...)
+    - site: [url]
+- ......
+
+#### 工具利用
+1. Burp Suite
+2. dirsearch
+    - https://github.com/maurosoria/dirsearch
+
+### 網頁漏洞掃描
+
+#### 工具利用
+- Jaeles
+    - https://github.com/jaeles-project/jaeles
+- nikto
+    - https://github.com/sullo/nikto
+
+### 網站WAF
+- WAF(WEB APPLICATON FIREWALL)
+#### 工具利用
+- wafw00f
+    - https://github.com/EnableSecurity/wafw00f
+
+### 代理掃描
+
+#### 工具
+- proxychains-ng
+    - https://github.com/rofl0r/proxychains-ng
+
+### 網站CDN
+- CDN(Contect Delivery Network)
+- 先掃描網站確定是否有CDN，再探測網站真實伺服器IP
+#### 掃描工具
+- WhichCDN
+    - https://github.com/Nitr4x/whichCDN
+
+#### 獲取網站IP工具
+- CloudFlair (針對CloudFlair)
+    - https://github.com/christophetd/CloudFlair
+- w8fuckcdn
+    - https://github.com/boy-hack/w8fuckcdn
+
+### 蜜罐原理
+- 蜜罐: 網站上部屬陷阱，讓攻擊者進入陷阱
+
+#### 蜜罐部屬工具
+- HFish
+    - https://github.com/hacklcx/HFish
+
+### 信息收集-小結
+- https://www.youtube.com/watch?v=d8xfCazLVPY&list=PLgZqc0esdeS9mbMWvAi5I7TWUWgaZLtpQ&index=23
+
+## 漏洞挖掘
+
+### 弱口令漏洞
+- 利用已知的簡單口令(密碼)嘗試爆破並登入
+    1. SSH
+    2. FTP
+    3. 3389 port
+    4. 網頁登入框
+
+#### 爆破工具利用
+- Hydra
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 常用工具介紹
 ## NMAP
@@ -103,3 +202,4 @@ nmap [target_ip/domain]
 - 輸出
     - -oN file: 輸出正常文件格式
 
+## Burp Suite
