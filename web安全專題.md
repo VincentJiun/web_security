@@ -281,6 +281,7 @@ select * from db_name where id='-1' union select ........ --+ (後面省略符�
 
 #### 補充:
 - 哈希計算是不可逆的 -> 哈希是摘要計算出來的結果
+- 密碼加鹽技術: 在密碼雜湊處理之前，先在密碼中加入一個鹽值，也就是一個隨機值。
 
 ## SQL注入工具:SQLMAP
 - 思路: 是否有一種腳本可以自動化執行SQL注入
@@ -372,3 +373,12 @@ sqlmap -u "target_url?id=1"
 2. 端口掃描
 3. 指紋篩選
 4. 暴力破解、字典破解
+
+
+
+
+
+
+
+## 補充
+- 免費TLS證書(http -> https 網域證書): https://letsencrypt.org/
